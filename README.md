@@ -50,7 +50,7 @@ Theoretically, the Closure Compiler is able to instrument for statement and bran
 
 # License
 
-Copyright [2018] [Dennis Pagano]
+Copyright 2018 Dennis Pagano
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
