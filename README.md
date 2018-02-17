@@ -12,7 +12,7 @@ This script reads in such JSON files, combines the contained coverage, and outpu
 
 # Usage
 
-```bash
+```
 usage: closure-coverage-merger.js [-h] [-v] [-o OUTPUT] -i INPUT [INPUT ...]
                                   [-x EXCLUDES] [-e ENCODING] [-f {lcov,json}]
                                   
