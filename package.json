@@ -1,0 +1,18 @@
+{
+  "name": "closure-coverage-merger",
+  "version": "1.0.0",
+  "description": "Coverage merger for the Google Closure Compiler. Merges multiple coverage objects stored in JSON files and outputs them as a single JSON or LCOV report.",
+  "main": "closure-coverage-merger.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dennis Pagano",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "argparse": "^1.0.10"
+  },
+  "repository": {
+  "type": "git",
+  "url": "git://github.com/dpagano/closure-coverage-merger.git"
+  }
+}
