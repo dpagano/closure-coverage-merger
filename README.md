@@ -1,3 +1,7 @@
+# closure-coverage-merger
+
+[![NPM version](https://img.shields.io/npm/v/closure-coverage-merger.svg)](https://www.npmjs.org/package/closure-coverage-merger)
+
 Coverage merger for the Google Closure Compiler. Merges multiple coverage objects stored in JSON files and outputs them as a single JSON or LCOV report.
 
 # Prerequisites
