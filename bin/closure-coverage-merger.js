@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 /*
  * Copyright [2018] [Dennis Pagano]
  *
@@ -30,7 +32,7 @@ saveCoverage();
 
 /** Reads and interprets the command line arguments. */
 function readArguments() {
-	var parser = new ArgumentParser({version: '1.0.0', addHelp:true, description: 'Coverage merger for the Google Closure Compiler. Merges multiple coverage objects stored in JSON files and outputs them as a single JSON or LCOV report.'});
+	var parser = new ArgumentParser({version: '1.0.1', addHelp:true, description: 'Coverage merger for the Google Closure Compiler. Merges multiple coverage objects stored in JSON files and outputs them as a single JSON or LCOV report.'});
 	parser.addArgument(['-o', '--output' ], {help: 'Name of the output file. Defaults to ' + outputFile});
 	parser.addArgument(['-i', '--input' ], {help: 'Input files containing the coverage objects', required: true, nargs: '+'});
 	parser.addArgument(['-x', '--excludes' ], {help: 'Exclude coverage for specific filenames. Coverage will not be processed for files whose filename contains one of these strings. Defaults to ' + JSON.stringify(excludes)});
