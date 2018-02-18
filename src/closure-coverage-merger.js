@@ -2,7 +2,7 @@
 'use strict';
 
 /*
- * Copyright [2018] [Dennis Pagano]
+ * Copyright 2018 Dennis Pagano
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,49 +18,26 @@
  */
 
 const fs = require('fs');
-const glob = require('glob');
-const ArgumentParser = require('argparse').ArgumentParser;
 
 let mergedCoverage = {};
 let excludes = ['closure-library:', 'generated', 'soyutils_usegoog'];
 let encoding = 'utf8';
 let outputFile = 'output.lcov';
-let inputFileNames = [];
 let format = 'lcov';
 
-readArguments();
-parseFiles();
-saveCoverage();
-
-/** Reads and interprets the command line arguments. */
-function readArguments() {
-	var parser = new ArgumentParser({version: '1.0.2', addHelp:true, description: 'Coverage merger for the Google Closure Compiler. Merges multiple coverage objects stored in JSON files and outputs them as a single JSON or LCOV report.'});
-	parser.addArgument(['-o', '--output' ], {help: 'Name of the output file. Defaults to ' + outputFile});
-	parser.addArgument(['-i', '--input' ], {help: 'Input files containing the coverage objects', required: true, nargs: '+'});
-	parser.addArgument(['-x', '--excludes' ], {help: 'Exclude coverage for specific filenames. Coverage will not be processed for files whose filename contains one of these strings. Defaults to ' + JSON.stringify(excludes)});
-	parser.addArgument(['-e', '--encoding' ], {help: 'Encoding to use when reading coverage files. Defaults to ' + encoding});
-	parser.addArgument(['-f', '--format' ], {help: 'Format of the created report. Defaults to ' + format, choices: ['lcov', 'json']});
-	let args = parser.parseArgs();
-
-	outputFile = args.output || outputFile;
-	excludes = args.excludes || excludes;
-	encoding = args.encoding || encoding;
-	format = args.format || format;
-
-	args.input.forEach(function (input) {
-		let results = glob.sync(input, {mark: true, nosort: true, strict: true});
-		inputFileNames.push.apply(inputFileNames, results);
-	});
+/** Merges and saves coverage from the specified files. */
+exports.mergeCoverage = function(inputFileNames) {
+	parseFiles(inputFileNames);
+	saveCoverage();
 }
 
 /** Parses the input files. */
-function parseFiles() {
+function parseFiles(inputFileNames) {
 	inputFileNames.forEach(fileName => {
 		let coverage = JSON.parse(fs.readFileSync(fileName, encoding));
 		checkCoverage(fileName, coverage);
 		parseCoverage(coverage);
 	});
-	cleanupMergedCoverage();
 	console.log('Generated coverage for ' + Object.keys(mergedCoverage).length + ' files.');
 }
 
@@ -93,7 +70,7 @@ function parseCoverage(coverage) {
 			}
 		}
 
-		setOrMergeCoverage(fileName, coveredLines);
+		setOrMergeCoverage(mergedCoverage, fileName, coveredLines);
 	}
 }
 
@@ -108,26 +85,19 @@ function shouldParse(fileName) {
 }
 
 /** Sets or merges the specified covered lines for the specified file. */
-function setOrMergeCoverage(fileName, coveredLines) {
+function setOrMergeCoverage(mergedCoverage, fileName, coveredLines) {
 	if (coveredLines.length < 1) {
 		return;
 	}
-	let existingCoverage = mergedCoverage[fileName] || new Set([]);
-	let newCoverage = new Set(coveredLines);
-	let combinedCoverage = new Set([...newCoverage, ...existingCoverage]);
-	mergedCoverage[fileName] = combinedCoverage
+	let existingCoverage = mergedCoverage[fileName] || [];
+	coveredLines.push.apply(coveredLines, existingCoverage);
+	let combinedCoverage = new Set(coveredLines);
+	mergedCoverage[fileName] = Array.from(combinedCoverage);
 }
 
 /** Issue an error and end the script. */
 function error(error) {
 	throw new Error(error);
-}
-
-/** Convert sets into arrays to be usable in JSON.stringify. */
-function cleanupMergedCoverage() {
-	Object.keys(mergedCoverage).forEach(fileName => {
-		mergedCoverage[fileName] = [...mergedCoverage[fileName]];
-	});	
 }
 
 /** Saves the coverage to different formats. */
