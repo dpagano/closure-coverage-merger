@@ -1,6 +1,6 @@
 {
   "name": "closure-coverage-merger",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Coverage merger for the Google Closure Compiler. Merges multiple coverage objects stored in JSON files and outputs them as a single JSON or LCOV report.",
   "preferGlobal": true,
   "bin": {
