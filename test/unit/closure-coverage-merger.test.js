@@ -1,22 +1,20 @@
 const assert = require('chai').assert;
-const rewire = require('rewire');
-const merger = rewire('../../src/closure-coverage-merger.js');
+const ClosureCoverageMerger = require('../../src/closure-coverage-merger.js').ClosureCoverageMerger;
 
-/** Tests for closure-coverage-merger.js */
-suite('closure-coverage-merger', function() {
+/** Tests for ClosureCoverageMerger */
+suite('ClosureCoverageMerger', function() {
 
 	test('should correctly union covered line numbers', function() {
-		const setOrMergeCoverage = merger.__get__('setOrMergeCoverage');
-		const mergedCoverage = {};
+		const merger = new ClosureCoverageMerger();
 
-		setOrMergeCoverage(mergedCoverage, 'a', [1,2,3]);
-		assertStoredCoverageEquals(mergedCoverage, 'a', [1,2,3]);
+		merger.setOrMergeCoverage('a', [1,2,3]);
+		assertStoredCoverageEquals(merger.mergedCoverage, 'a', [1,2,3]);
 
-		setOrMergeCoverage(mergedCoverage, 'a', []);
-		assertStoredCoverageEquals(mergedCoverage, 'a', [1,2,3]);
+		merger.setOrMergeCoverage('a', []);
+		assertStoredCoverageEquals(merger.mergedCoverage, 'a', [1,2,3]);
 
-		setOrMergeCoverage(mergedCoverage, 'a', [2,3,4]);
-		assertStoredCoverageEquals(mergedCoverage, 'a', [1,2,3,4]);
+		merger.setOrMergeCoverage('a', [2,3,4]);
+		assertStoredCoverageEquals(merger.mergedCoverage, 'a', [1,2,3,4]);
 	});
 
 	/** Helper to check for correct coverage. */
