@@ -6,7 +6,7 @@ Coverage merger for the Google Closure Compiler. Merges multiple coverage object
 
 # Prerequisites
 
-Run `npm i` to install dependencies.
+Run `npm install closure-coverage-merger` to install the merger including dependencies. Preferred way is to install globally.
 
 # Instrumentation
 
@@ -17,8 +17,8 @@ This script reads in such JSON files, combines the contained coverage, and outpu
 # Usage
 
 ```
-usage: closure-coverage-merger.js [-h] [-v] [-o OUTPUT] -i INPUT [INPUT ...]
-                                  [-x EXCLUDES] [-e ENCODING] [-f {lcov,json}]
+usage: closure-coverage-merger [-h] [-v] [-o OUTPUT] -i INPUT [INPUT ...]
+                               [-x EXCLUDES] [-e ENCODING] [-f {lcov,json}]
                                   
 
 Coverage merger for the Google Closure Compiler. Merges multiple coverage 
